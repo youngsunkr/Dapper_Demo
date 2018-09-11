@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Dapper_Demo.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -31,6 +32,14 @@ namespace Dapper_Demo
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
 
+            //// Configure Google Recaptcha
+            //// reading values from appsettings.json
+            //services.AddRecaptcha(new RecaptchaOptions
+            //{
+            //    SiteKey = this.Configuration.GetValue<string>("Recaptcha:SiteKey"),
+            //    SecretKey = this.Configuration.GetValue<string>("Recaptcha:SecretKey")
+            //});
+
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
         }
@@ -48,6 +57,16 @@ namespace Dapper_Demo
                 app.UseHsts();
             }
 
+            //app.Run(async (context) =>
+            //{
+            //    var message = Configuration["HelloWorld"];
+            //    await context.Response.WriteAsync(message);
+
+            //    //var message2 = DbConn.GetConnectionString();
+            //    var message2 = Configuration["ConnectionStrings:DefaultConnection"];
+            //    await context.Response.WriteAsync(message2);
+            //});
+
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseCookiePolicy();
@@ -56,7 +75,7 @@ namespace Dapper_Demo
             {
                 routes.MapRoute(
                     name: "default",
-                    template: "{controller=Home}/{action=Index}/{id?}");
+                    template: "{controller=Users}/{action=Index}/{id?}");
             });
         }
     }
