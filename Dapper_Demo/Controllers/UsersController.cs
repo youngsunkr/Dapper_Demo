@@ -10,12 +10,14 @@ namespace Dapper_Demo.Controllers
 {
     public class UsersController : Controller
     {
-        private UserRepository repo = new UserRepository();
+        // https://weblog.west-wind.com/posts/2017/Dec/12/Easy-Configuration-Binding-in-ASPNET-Core-revisited
+        private UserRepository repo { get; }
 
         // GET: Users
         public ActionResult Index()
         {
-            return View(repo.GetUser());
+            //return View(repo.GetUser());
+            return View();
         }
 
         // GET: Users/Details/5

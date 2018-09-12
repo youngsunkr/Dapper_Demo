@@ -5,13 +5,23 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Dapper_Demo.Models;
+using Microsoft.Extensions.Configuration;
 
 namespace Dapper_Demo.Controllers
 {
     public class HomeController : Controller
     {
+        //https://www.c-sharpcorner.com/article/configuration-in-asp-net-core/
+        IConfiguration _configuration;
+
+        public HomeController(IConfiguration configuration)
+        {
+            _configuration = configuration;
+        }
+
         public IActionResult Index()
         {
+            ViewBag.connectionstring = _configuration["ConnectionStrings:DefaultConnection"];
             return View();
         }
 

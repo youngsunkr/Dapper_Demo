@@ -6,18 +6,24 @@ using System.Data.SqlClient;
 using System.Linq;
 using System.Threading.Tasks;
 using Dapper;
+using Microsoft.Extensions.Configuration;
 
 namespace Dapper_Demo.Models
 {
     public class UserRepository
     {
         //private string connectionString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
-        private string connectionString = DbConn.GetConnectionString();
+        private string _connectionString = null;
+
+        public UserRepository(IConfiguration configuration)
+        {   
+            this._connectionString = configuration.GetConnectionString("DefaultConnection");
+        }
 
         public List<User> GetUser()
         {
             List<User> users = new List<User>();
-            using (IDbConnection db = new SqlConnection(connectionString))
+            using (IDbConnection db = new SqlConnection(_connectionString))
             {
                 users = db.Query<User>("Select * From Users").ToList();
             }
@@ -28,7 +34,7 @@ namespace Dapper_Demo.Models
         public User Get(int id)
         {
             User user = null;
-            using (IDbConnection db = new SqlConnection(connectionString))
+            using (IDbConnection db = new SqlConnection(_connectionString))
             {
                 user = db.Query<User>("Select * From Users WHERE Id = @Id", new {id}).FirstOrDefault();
             }
@@ -38,7 +44,7 @@ namespace Dapper_Demo.Models
 
         public User Create(User user)
         {
-            using (IDbConnection db = new SqlConnection(connectionString))
+            using (IDbConnection db = new SqlConnection(_connectionString))
             {
                 var sqlQuery = "INSERT INTO Users (Name, Age) VALUES(@Name, @Age); SELECT CAST(SCOPE_IDENTITY() as int)";
                 //int? userId = db.Query<int>(sqlQuery, user).FirstOrDefault();
@@ -50,7 +56,7 @@ namespace Dapper_Demo.Models
 
         public void Update(User user)
         {
-            using (IDbConnection db = new SqlConnection(connectionString))
+            using (IDbConnection db = new SqlConnection(_connectionString))
             {
                 var sqlQuery = "UPDATE Users SET Name = @Name, Age = @Age WHERE Id = @Id";
                 db.Execute(sqlQuery, user);
@@ -59,7 +65,7 @@ namespace Dapper_Demo.Models
 
         public void Delete(int id)
         {
-            using (IDbConnection db = new SqlConnection(connectionString))
+            using (IDbConnection db = new SqlConnection(_connectionString))
             {
                 var sqlQuery = "DELETE FROM Users WHERE Id = @id";
                 db.Execute(sqlQuery, new { id });

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Dapper_Demo.Global;
 using Dapper_Demo.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -42,6 +43,15 @@ namespace Dapper_Demo
 
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+            services.AddSingleton<IConfiguration>(Configuration);  
+
+            //services.Configure<MessagesOptions>(Configuration.GetSection("Messages"));
+            services.Configure<CbnSettings>(Configuration);
+
+
+            //var messages = new MessagesOptions();
+            //Configuration.GetSection("Messages").Bind(messages);
+            //Configuration.Bind("Messages", message);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -75,7 +85,16 @@ namespace Dapper_Demo
             {
                 routes.MapRoute(
                     name: "default",
-                    template: "{controller=Users}/{action=Index}/{id?}");
+                    template: "{controller=Home}/{action=Index}/{id?}");
+            });
+
+            app.Run(context =>
+            {
+                var allowedHosts = Configuration["AllowedHosts"];
+                var connectionString = Configuration["ConnectionStrings:DefaultConnection"];
+                context.Response.WriteAsync("Default Connection: " + connectionString);
+                context.Response.WriteAsync("<br/>");
+                return context.Response.WriteAsync("AllowedHosts: " + allowedHosts);
             });
         }
     }
