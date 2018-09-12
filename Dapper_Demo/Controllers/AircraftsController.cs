@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Dapper;
 using Dapper_Demo.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -14,7 +15,14 @@ namespace Dapper_Demo.Controllers
     [Route("api/[controller]")]
     public class AircraftsController : Controller
     {
-        private AircraftRepository repo = new AircraftRepository();
+        //private AircraftRepository repo = new AircraftRepository();
+        private AircraftRepository repo { get; }
+        private string _connectionString = null;
+
+        public AircraftsController(IConfiguration configuration)
+        {
+            _connectionString = configuration.GetConnectionString("DefaultConnection");
+        }
 
         // GET: api/<controller>
         [HttpGet]
@@ -22,7 +30,7 @@ namespace Dapper_Demo.Controllers
         {
             IEnumerable<Aircraft> aircraft;
 
-            using (var connection = new SqlConnection(""))
+            using (var connection = new SqlConnection(_connectionString))
             {
                 await connection.OpenAsync();
                 var query = @"
@@ -49,7 +57,7 @@ SELECT
         public async Task<Aircraft> Get(int id)
         {
             Aircraft aircraft;
-            using (var connection = new SqlConnection(""))
+            using (var connection = new SqlConnection(_connectionString))
             {
                 await connection.OpenAsync();
                 var query = @"

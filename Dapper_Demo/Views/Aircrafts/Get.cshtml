@@ -1,0 +1,95 @@
+﻿@model IEnumerable<Dapper_Demo.Models.Aircraft>
+
+@{
+    ViewData["Title"] = "Get";
+}
+
+<h2>Get</h2>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Id)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Manufacturer)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Model)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.RegistrationNumber)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FirstClassCapacity)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.RegularClassCapacity)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CrewCapacity)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ManufactureDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.NumberOfEngines)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.EmptyWeight)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.MaxTakeoffWeight)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Id)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Manufacturer)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Model)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.RegistrationNumber)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.FirstClassCapacity)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.RegularClassCapacity)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CrewCapacity)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ManufactureDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.NumberOfEngines)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.EmptyWeight)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.MaxTakeoffWeight)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
+                @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
+                @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
